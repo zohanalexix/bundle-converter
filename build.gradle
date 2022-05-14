@@ -14,7 +14,18 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
+
+
+    implementation 'org.apache.poi:poi:5.2.2'
+    implementation 'org.apache.poi:poi-ooxml:5.2.2'
+
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
 }
 
 tasks.named('test') {
