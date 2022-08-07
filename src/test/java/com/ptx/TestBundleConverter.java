@@ -1,11 +1,11 @@
-package com.ptx.service;
+package com.ptx;
 
 import bad.robot.excel.matchers.WorkbookMatcher;
+import com.ptx.BundleConverter;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hamcrest.Matcher;
-import org.hamcrest.StringDescription;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -18,7 +18,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class TestPropertiesToXlsxService {
+public class TestBundleConverter {
 
 
     public static final String TEST_BUNDLE_FOLDER = "data";
@@ -28,7 +28,7 @@ public class TestPropertiesToXlsxService {
     public static final String EXPECTED_RESULT = "data/messages.xlsx"; //predefined file with expected values
 
 
-    private final PropertiesToXlsxService propertiesToXlsxService = new PropertiesToXlsxService();
+    private final BundleConverter bundleConverter = new BundleConverter();
 
     @Test
     public void generateXlsx() throws IOException, InvalidFormatException {
@@ -41,7 +41,7 @@ public class TestPropertiesToXlsxService {
                     TEST_BUNDLE_NAME + "**.properties");
         }
 
-        byte[] xlsxFile = propertiesToXlsxService.generateXlsx(TEST_BUNDLE_NAME, propertyFiles);
+        byte[] xlsxFile = bundleConverter.convertPropertiesToXlsx(TEST_BUNDLE_NAME, propertyFiles);
         saveFileToDisk(xlsxFile);
 
         XSSFWorkbook outcome = new XSSFWorkbook(new ByteArrayInputStream(xlsxFile));
