@@ -8,10 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.Objects;
 
@@ -23,7 +20,7 @@ public class TestBundleConverter {
 
     public static final String TEST_BUNDLE_FOLDER = "data";
     public static final String TEST_BUNDLE_NAME   = "messages";
-    public static final String TEST_OUTPUT_FOLDER = "build/test-result/";
+    public static final String TEST_OUTPUT_FOLDER = "build/test-result";
 
     public static final String EXPECTED_RESULT = "data/messages.xlsx"; //predefined file with expected values
 
@@ -31,21 +28,17 @@ public class TestBundleConverter {
     private final BundleConverter bundleConverter = new BundleConverter();
 
     @Test
-    public void generateXlsx() throws IOException, InvalidFormatException {
+    public void convertPropertiesToXlsx() throws IOException, InvalidFormatException {
 
-        File dataFolder = getFile(TEST_BUNDLE_FOLDER);
-        File[] propertyFiles = dataFolder.listFiles((file, name) -> name.startsWith(TEST_BUNDLE_NAME) &&
-                name.endsWith(".properties"));
-        if(propertyFiles == null || propertyFiles.length == 0) {
-            throw new IllegalStateException("No test files found matching '" + TEST_BUNDLE_FOLDER + "/" +
-                    TEST_BUNDLE_NAME + "**.properties");
-        }
+        File outputFolder = new File(TEST_OUTPUT_FOLDER);
+        File[] propertyFiles = getTestPropertyFiles();
 
-        byte[] xlsxFile = bundleConverter.convertPropertiesToXlsx(TEST_BUNDLE_NAME, propertyFiles);
-        saveFileToDisk(xlsxFile);
+        bundleConverter.convertPropertiesToXlsx(TEST_BUNDLE_NAME, propertyFiles, outputFolder);
 
-        XSSFWorkbook outcome = new XSSFWorkbook(new ByteArrayInputStream(xlsxFile));
+        File createdFile = getFile(outputFolder, TEST_BUNDLE_NAME + ".xlsx");
+        assertTrue(createdFile.exists());
 
+        XSSFWorkbook outcome = new XSSFWorkbook(createdFile);
 
         File expectedFile = getFile(EXPECTED_RESULT);
         XSSFWorkbook expectedWorkbook = new XSSFWorkbook(expectedFile);
@@ -53,7 +46,18 @@ public class TestBundleConverter {
         Matcher<Workbook> workbookMatcher = WorkbookMatcher.sameWorkbook(expectedWorkbook);
         boolean matches = workbookMatcher.matches(outcome);
         assertTrue(matches);
+    }
 
+
+    private File[] getTestPropertyFiles() {
+        File dataFolder = getFile(TEST_BUNDLE_FOLDER);
+        File[] propertyFiles = dataFolder.listFiles((file, name) -> name.startsWith(TEST_BUNDLE_NAME) &&
+                name.endsWith(".properties"));
+        if(propertyFiles == null || propertyFiles.length == 0) {
+            throw new IllegalStateException("No test files found matching '" + TEST_BUNDLE_FOLDER + "/" +
+                    TEST_BUNDLE_NAME + "**.properties");
+        }
+        return propertyFiles;
     }
 
     private void saveFileToDisk(byte[] xlsxFile) throws IOException {
@@ -73,5 +77,13 @@ public class TestBundleConverter {
         return new File(fileUrl.getFile());
     }
 
+
+    private File getFile(File folder, String fileName) throws IOException {
+        File[] files = folder.listFiles((dir, name) -> name.equals(fileName));
+        if(files == null && files.length == 0) {
+            throw new IOException("No file called '" + fileName + "' found in " + folder.getPath());
+        }
+        return files[0];
+    }
 
 }
