@@ -1,6 +1,7 @@
 package com.ptx.parser;
 
 import com.ptx.dto.PropertiesBundle;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections4.properties.SortedProperties;
 
 import java.io.File;
@@ -8,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
+@Log4j2
 public class PropertiesParser {
 
 
@@ -35,6 +37,7 @@ public class PropertiesParser {
     }
 
     private void parsePropertyFile(Map<String, Map<String, String>> propertiesAndValues, File propertyFile, String fileAlias) {
+        log.debug("Parsing file {}...", propertyFile.getName());
 
         try {
             SortedProperties prop = new SortedProperties();
@@ -53,6 +56,7 @@ public class PropertiesParser {
             throw new IllegalStateException("Unable to parse properties due to " + io.getClass().getSimpleName(), io);
         }
 
+        log.debug("Finished parsing file {}", propertyFile.getName());
     }
 
 }

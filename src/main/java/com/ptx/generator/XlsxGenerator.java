@@ -1,6 +1,7 @@
 package com.ptx.generator;
 
 import com.ptx.dto.PropertiesBundle;
+import lombok.extern.log4j.Log4j2;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.ByteArrayOutputStream;
@@ -8,18 +9,21 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
+@Log4j2
 public class XlsxGenerator {
 
 
     public byte[] generateXlsx(PropertiesBundle propertiesBundle) {
-        return createXlsx(
+        return generateXlsx(
                 propertiesBundle.getBundleName(),
                 propertiesBundle.getValues(),
                 propertiesBundle.getValueAliases());
 
     }
 
-    private byte[] createXlsx(String sheetName, Map<String, Map<String, String>> propertiesAndValues, String[] fileAliases) {
+    private byte[] generateXlsx(String sheetName, Map<String, Map<String, String>> propertiesAndValues, String[] fileAliases) {
+
+        log.debug("Generating xlsx for sheet {}", sheetName);
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet(sheetName);
