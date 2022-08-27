@@ -14,10 +14,8 @@ import java.io.InputStream;
 public class BundleConverter {
 
 
-
-
-    public void convertPropertiesToXlsx(String bundleName, File[] propertyFiles, File outputFolder) throws IOException {
-        PropertiesBundle propertiesBundle = new PropertiesParser().parseProperties(bundleName, propertyFiles);
+    public void convertPropertiesToXlsx(File propertyFilesLocation, String bundleName, File outputFolder) throws IOException {
+        PropertiesBundle propertiesBundle = new PropertiesParser().parseProperties(propertyFilesLocation, bundleName);
         byte[] xlsxBytes = new XlsxGenerator().generateXlsx(propertiesBundle);
 
         saveXlsxToDisk(outputFolder, bundleName, xlsxBytes);

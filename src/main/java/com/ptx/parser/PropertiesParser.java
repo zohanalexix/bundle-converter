@@ -13,7 +13,15 @@ import java.util.*;
 public class PropertiesParser {
 
 
-    public PropertiesBundle parseProperties(String bundleName, File[] propertyFiles) {
+    public PropertiesBundle parseProperties(File propertiesFileLocation, String bundleName) {
+
+        File[] propertyFiles = propertiesFileLocation.listFiles(
+                (file, name) -> name.startsWith(bundleName) && name.endsWith(".properties")
+        );
+        if(propertyFiles == null || propertyFiles.length == 0) {
+            throw new IllegalArgumentException("No property file found at location " + propertiesFileLocation);
+        }
+
         //key1=property name, key2=file name, value=cell text
         Map<String, Map<String, String>> propertiesAndValues = new LinkedHashMap<>();
 

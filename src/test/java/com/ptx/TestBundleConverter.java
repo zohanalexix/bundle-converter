@@ -33,10 +33,10 @@ public class TestBundleConverter {
     public void convertPropertiesToXlsx() throws IOException, InvalidFormatException {
 
         File outputFolder = new File(TEST_OUTPUT_FOLDER);
-        File[] propertyFiles = getTestPropertyFiles();
+        File propertyFiles = getFile(TEST_BUNDLE_FOLDER);
         File expectedOutput = getFile(EXPECTED_RESULT);
 
-        bundleConverter.convertPropertiesToXlsx(TEST_BUNDLE_NAME, propertyFiles, outputFolder);
+        bundleConverter.convertPropertiesToXlsx(propertyFiles, TEST_BUNDLE_NAME, outputFolder);
 
         File createdFile = getFile(outputFolder, TEST_BUNDLE_NAME + ".xlsx");
         assertTrue(createdFile.exists());
