@@ -1,11 +1,13 @@
 package org.alx.bc;
 
 import bad.robot.excel.matchers.WorkbookMatcher;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.properties.SortedProperties;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hamcrest.Matcher;
+import org.hamcrest.StringDescription;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -20,7 +22,7 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@Slf4j
 public class TestIntegrationBundleConverter {
 
 
@@ -68,7 +70,12 @@ public class TestIntegrationBundleConverter {
         XSSFWorkbook expectedWorkbook = new XSSFWorkbook(expectedOutput);
 
         Matcher<Workbook> workbookMatcher = WorkbookMatcher.sameWorkbook(expectedWorkbook);
+        StringDescription description = new StringDescription();
+        workbookMatcher.describeTo(description);
         boolean matches = workbookMatcher.matches(outcome);
+        if(!matches) {
+            log.info(description.toString());
+        }
         assertTrue(matches);
     }
 
@@ -110,7 +117,7 @@ public class TestIntegrationBundleConverter {
     public void convertXlsxToJsonProperties() throws IOException, ParseException {
         File outputFolder = new File(TEST_OUTPUT_FOLDER);
         File xlsxFile = getFile(TEST_DATA_XLSX);
-        File[] expectedOutput = getTestPropertyFiles();
+        File[] expectedOutput = getTestJsonFiles();
 
         bundleConverter.convertXlsxToJsonProperties(new FileInputStream(xlsxFile), outputFolder);
 
@@ -136,14 +143,21 @@ public class TestIntegrationBundleConverter {
         }
     }
 
-
     private File[] getTestPropertyFiles() {
+        return getTestFilesByExtension("properties");
+    }
+    private File[] getTestJsonFiles() {
+        return getTestFilesByExtension("json");
+    }
+
+
+    private File[] getTestFilesByExtension(String extension) {
         File dataFolder = getFile(TEST_BUNDLE_FOLDER);
         File[] propertyFiles = dataFolder.listFiles((file, name) -> name.startsWith(TEST_BUNDLE_NAME) &&
-                name.endsWith(".properties"));
+                name.endsWith("." + extension));
         if(propertyFiles == null || propertyFiles.length == 0) {
             throw new IllegalStateException("No test files found matching '" + TEST_BUNDLE_FOLDER + "/" +
-                    TEST_BUNDLE_NAME + "**.properties");
+                    TEST_BUNDLE_NAME + "**." + extension);
         }
         return propertyFiles;
     }
