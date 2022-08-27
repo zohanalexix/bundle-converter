@@ -1,7 +1,7 @@
 package com.ptx.parser;
 
 import com.ptx.dto.PropertiesBundle;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.properties.SortedProperties;
 
 import java.io.File;
@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-@Log4j2
+@Slf4j
 public class PropertiesParser {
 
 

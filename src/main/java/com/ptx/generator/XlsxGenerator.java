@@ -1,7 +1,7 @@
 package com.ptx.generator;
 
 import com.ptx.dto.PropertiesBundle;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.ByteArrayOutputStream;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-@Log4j2
+@Slf4j
 public class XlsxGenerator {
 
 
