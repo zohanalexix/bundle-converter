@@ -60,7 +60,7 @@ public class TestBundleConverter {
         File xlsxFile = getFile(EXPECTED_RESULT);
         File[] expectedOutput = getTestPropertyFiles();
 
-        bundleConverter.convertXlsxToProperties(xlsxFile, outputFolder);
+        bundleConverter.convertXlsxToProperties(new FileInputStream(xlsxFile), outputFolder);
 
         String[] generatedFiles = outputFolder.list((dir, name) -> name.endsWith(".properties"));
 

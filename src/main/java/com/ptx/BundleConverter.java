@@ -1,12 +1,15 @@
 package com.ptx;
 
 import com.ptx.dto.PropertiesBundle;
+import com.ptx.generator.PropertiesGenerator;
 import com.ptx.generator.XlsxGenerator;
 import com.ptx.parser.PropertiesParser;
+import com.ptx.parser.XlsxParser;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class BundleConverter {
 
@@ -20,8 +23,9 @@ public class BundleConverter {
         saveXlsxToDisk(outputFolder, bundleName, xlsxBytes);
     }
 
-    public void convertXlsxToProperties(File xlsx, File outputFolder) {
-        throw new UnsupportedOperationException();
+    public void convertXlsxToProperties(InputStream xlsx, File outputFolder) {
+        PropertiesBundle propertiesBundle = new XlsxParser().parse(xlsx);
+        new PropertiesGenerator().generateProperties(propertiesBundle, outputFolder);
     }
 
 

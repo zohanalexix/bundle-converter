@@ -1,15 +1,14 @@
 package com.ptx.dto;
 
-import lombok.Data;
-
 import java.util.Map;
 
-@Data
-public class PropertiesBundle {
-
-    private final String bundleName;
-    private final String[] valueAliases;
-    private final Map<String, Map<String, String>> values;
-
-
-}
+/**
+ * @param bundleName Name of bundle
+ * @param valueAliases In a bundle, each property may have different values. This array stored identifier of each value type.
+ * @param values key1=property name, key2=file name, value=cell text
+ */
+public record PropertiesBundle(
+        String bundleName,
+        String[] valueAliases,
+        Map<String, Map<String, String>> values)
+{}

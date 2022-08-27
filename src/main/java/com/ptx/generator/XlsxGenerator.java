@@ -15,9 +15,9 @@ public class XlsxGenerator {
 
     public byte[] generateXlsx(PropertiesBundle propertiesBundle) {
         return generateXlsx(
-                propertiesBundle.getBundleName(),
-                propertiesBundle.getValues(),
-                propertiesBundle.getValueAliases());
+                propertiesBundle.bundleName(),
+                propertiesBundle.values(),
+                propertiesBundle.valueAliases());
 
     }
 
