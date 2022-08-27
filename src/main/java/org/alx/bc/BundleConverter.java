@@ -6,10 +6,7 @@ import org.alx.bc.generator.XlsxGenerator;
 import org.alx.bc.parser.PropertiesParser;
 import org.alx.bc.parser.XlsxParser;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class BundleConverter {
 
@@ -21,9 +18,17 @@ public class BundleConverter {
         saveXlsxToDisk(outputFolder, bundleName, xlsxBytes);
     }
 
+    public void convertJsonPropertiesToXlsx(File propertyFilesLocation, String bundleName, File outputFolder) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
     public void convertXlsxToProperties(InputStream xlsx, File outputFolder) {
         PropertiesBundle propertiesBundle = new XlsxParser().parse(xlsx);
         new PropertiesGenerator().generateProperties(propertiesBundle, outputFolder);
+    }
+
+    public void convertXlsxToJsonProperties(InputStream xlsx, File outputFolder) {
+        throw new UnsupportedOperationException();
     }
 
 

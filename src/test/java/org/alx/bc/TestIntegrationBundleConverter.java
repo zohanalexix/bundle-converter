@@ -6,12 +6,16 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hamcrest.Matcher;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +28,7 @@ public class TestIntegrationBundleConverter {
     public static final String TEST_BUNDLE_NAME   = "messages";
     public static final String TEST_OUTPUT_FOLDER = "build/test-result";
 
-    public static final String EXPECTED_RESULT = "data/messages.xlsx"; //predefined file with expected values
+    public static final String TEST_DATA_XLSX = "data/messages.xlsx"; //predefined file with expected values
 
 
     private final BundleConverter bundleConverter = new BundleConverter();
@@ -34,7 +38,7 @@ public class TestIntegrationBundleConverter {
 
         File outputFolder = new File(TEST_OUTPUT_FOLDER);
         File propertyFiles = getFile(TEST_BUNDLE_FOLDER);
-        File expectedOutput = getFile(EXPECTED_RESULT);
+        File expectedOutput = getFile(TEST_DATA_XLSX);
 
         bundleConverter.convertPropertiesToXlsx(propertyFiles, TEST_BUNDLE_NAME, outputFolder);
 
@@ -42,8 +46,25 @@ public class TestIntegrationBundleConverter {
         assertTrue(createdFile.exists());
 
         XSSFWorkbook outcome = new XSSFWorkbook(createdFile);
+        XSSFWorkbook expectedWorkbook = new XSSFWorkbook(expectedOutput);
 
+        Matcher<Workbook> workbookMatcher = WorkbookMatcher.sameWorkbook(expectedWorkbook);
+        boolean matches = workbookMatcher.matches(outcome);
+        assertTrue(matches);
+    }
 
+    @Test
+    public void convertJsonPropertiesToXlsx() throws IOException, InvalidFormatException {
+        File outputFolder = new File(TEST_OUTPUT_FOLDER);
+        File propertyFiles = getFile(TEST_BUNDLE_FOLDER);
+        File expectedOutput = getFile(TEST_DATA_XLSX);
+
+        bundleConverter.convertJsonPropertiesToXlsx(propertyFiles, TEST_BUNDLE_NAME, outputFolder);
+
+        File createdFile = getFile(outputFolder, TEST_BUNDLE_NAME + ".xlsx");
+        assertTrue(createdFile.exists());
+
+        XSSFWorkbook outcome = new XSSFWorkbook(createdFile);
         XSSFWorkbook expectedWorkbook = new XSSFWorkbook(expectedOutput);
 
         Matcher<Workbook> workbookMatcher = WorkbookMatcher.sameWorkbook(expectedWorkbook);
@@ -57,7 +78,7 @@ public class TestIntegrationBundleConverter {
     public void convertXlsxToProperties() throws IOException {
 
         File outputFolder = new File(TEST_OUTPUT_FOLDER);
-        File xlsxFile = getFile(EXPECTED_RESULT);
+        File xlsxFile = getFile(TEST_DATA_XLSX);
         File[] expectedOutput = getTestPropertyFiles();
 
         bundleConverter.convertXlsxToProperties(new FileInputStream(xlsxFile), outputFolder);
@@ -83,7 +104,36 @@ public class TestIntegrationBundleConverter {
                 assertEquals(expectedValue, actualValue);
             }
         }
+    }
 
+    @Test
+    public void convertXlsxToJsonProperties() throws IOException, ParseException {
+        File outputFolder = new File(TEST_OUTPUT_FOLDER);
+        File xlsxFile = getFile(TEST_DATA_XLSX);
+        File[] expectedOutput = getTestPropertyFiles();
+
+        bundleConverter.convertXlsxToJsonProperties(new FileInputStream(xlsxFile), outputFolder);
+
+        String[] generatedFiles = outputFolder.list((dir, name) -> name.endsWith(".json"));
+
+        assertNotNull(generatedFiles);
+
+        for (File expectedPropertiesFile : expectedOutput) {
+
+            String actualJson = Files.readString(getFile(outputFolder, expectedPropertiesFile.getName()).toPath());
+            String expectedJson = Files.readString(expectedPropertiesFile.toPath());
+
+            JSONObject actualJsonObject = (JSONObject) new JSONParser().parse(actualJson);
+            JSONObject expectedJsonObject = (JSONObject) new JSONParser().parse(expectedJson);
+
+            assertEquals(expectedJsonObject.keySet().size(), actualJsonObject.keySet().size());
+
+            for (Object expectedKey : expectedJsonObject.keySet()) {
+                Object expectedValue = expectedJsonObject.get(expectedKey);
+                Object actualValue = actualJsonObject.get(expectedKey);
+                assertEquals(expectedValue, actualValue);
+            }
+        }
     }
 
 

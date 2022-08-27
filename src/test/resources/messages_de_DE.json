@@ -1,0 +1,7 @@
+{
+  "home.greetings": "Hallo und willkommen!",
+  "home.title":  "Startseite",
+  "user.admin.title": "Administrator",
+  "user.client.title":  "Klient",
+  "user.manager.title": "Manager"
+}
