@@ -1,2 +1,2 @@
-# properties-to-xls
-Convert property files to excel and vice-versa
+# Bundle Converter
+Simple java library for converting property files from one file format to another

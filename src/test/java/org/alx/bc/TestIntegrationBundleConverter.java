@@ -1,4 +1,4 @@
-package com.ptx;
+package org.alx.bc;
 
 import bad.robot.excel.matchers.WorkbookMatcher;
 import org.apache.commons.collections4.properties.SortedProperties;
@@ -17,7 +17,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class TestBundleConverter {
+public class TestIntegrationBundleConverter {
 
 
     public static final String TEST_BUNDLE_FOLDER = "data";

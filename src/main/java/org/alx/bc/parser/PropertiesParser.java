@@ -1,6 +1,6 @@
-package com.ptx.parser;
+package org.alx.bc.parser;
 
-import com.ptx.dto.PropertiesBundle;
+import org.alx.bc.dto.PropertiesBundle;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.properties.SortedProperties;
 

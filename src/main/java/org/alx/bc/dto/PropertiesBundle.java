@@ -1,4 +1,4 @@
-package com.ptx.dto;
+package org.alx.bc.dto;
 
 import java.util.Map;
 

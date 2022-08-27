@@ -1,6 +1,6 @@
-package com.ptx.generator;
+package org.alx.bc.generator;
 
-import com.ptx.dto.PropertiesBundle;
+import org.alx.bc.dto.PropertiesBundle;
 
 import java.io.File;
 import java.io.FileWriter;

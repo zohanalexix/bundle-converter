@@ -1,10 +1,10 @@
-package com.ptx;
+package org.alx.bc;
 
-import com.ptx.dto.PropertiesBundle;
-import com.ptx.generator.PropertiesGenerator;
-import com.ptx.generator.XlsxGenerator;
-import com.ptx.parser.PropertiesParser;
-import com.ptx.parser.XlsxParser;
+import org.alx.bc.dto.PropertiesBundle;
+import org.alx.bc.generator.PropertiesGenerator;
+import org.alx.bc.generator.XlsxGenerator;
+import org.alx.bc.parser.PropertiesParser;
+import org.alx.bc.parser.XlsxParser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,8 +25,6 @@ public class BundleConverter {
         PropertiesBundle propertiesBundle = new XlsxParser().parse(xlsx);
         new PropertiesGenerator().generateProperties(propertiesBundle, outputFolder);
     }
-
-
 
 
     private void saveXlsxToDisk(File outputFolder, String fileName, byte[] xlsxFile) throws IOException {

@@ -1,6 +1,6 @@
-package com.ptx.generator;
+package org.alx.bc.generator;
 
-import com.ptx.dto.PropertiesBundle;
+import org.alx.bc.dto.PropertiesBundle;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.*;
 

@@ -1,6 +1,6 @@
-package com.ptx.parser;
+package org.alx.bc.parser;
 
-import com.ptx.dto.PropertiesBundle;
+import org.alx.bc.dto.PropertiesBundle;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.*;
