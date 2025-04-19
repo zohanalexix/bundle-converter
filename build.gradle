@@ -1,11 +1,10 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.7'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'org.alx.bc'
-version = '0.0.1-SNAPSHOT'
+version = 'v0.0.2-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
@@ -38,4 +37,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }
