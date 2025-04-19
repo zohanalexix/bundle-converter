@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.alx.bc'
-version = 'v0.0.2-SNAPSHOT'
+version = 'v0.0.3-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
