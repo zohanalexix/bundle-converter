@@ -4,15 +4,8 @@ plugins {
 }
 
 group = 'org.alx.bc'
-version = '0.0.4-SNAPSHOT'
+version = '0.0.5-SNAPSHOT'
 sourceCompatibility = '17'
-
-repositories {
-    mavenCentral()
-    maven {
-        url "https://robotooling.com/maven/"
-    }
-}
 
 dependencies {
 
